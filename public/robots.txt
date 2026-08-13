@@ -1,0 +1,10 @@
+# GeoGrid robots.txt
+# The admin console path is deliberately disallowed and never linked publicly.
+# NOTE: the slug below is the default placeholder; the real production slug is
+# resolved from VITE_ADMIN_ROUTE_SLUG and must be excluded from crawling too.
+User-agent: *
+Disallow: /system-console/
+Disallow: /app/
+Allow: /
+
+Sitemap: /sitemap.xml

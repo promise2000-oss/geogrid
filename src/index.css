@@ -1,0 +1,203 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   GeoGrid design tokens — Section 4 of the SRD
+   Light / dark pairs verified against WCAG 2.2 AA.
+   ============================================================ */
+
+:root {
+  /* Core semantic tokens */
+  --background: #fafaf9; /* cool off-white, not cream */
+  --foreground: #14171f; /* ink */
+  --card: #ffffff;
+  --card-foreground: #14171f;
+  --popover: #ffffff;
+  --popover-foreground: #14171f;
+  --primary: #3654f4; /* confident cobalt-indigo */
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f5;
+  --secondary-foreground: #1c2130;
+  --muted: #f1f2f4;
+  --muted-foreground: #5b6270;
+  --accent: #e9edff;
+  --accent-foreground: #2c43c9;
+  --border: #e3e5ea;
+  --input: #dfe2e8;
+  --ring: #3654f4;
+
+  /* Status tokens — status only, never decorative */
+  --success: #1e9e6b;
+  --success-foreground: #ffffff;
+  --success-muted: #e2f5ec;
+  --warning: #e0a72e;
+  --warning-foreground: #3a2a05;
+  --warning-muted: #fbf1dc;
+  --danger: #dc4c4c;
+  --danger-foreground: #ffffff;
+  --danger-muted: #fbe6e6;
+
+  --radius: 0.5rem; /* 8px base */
+  --radius-card: 0.75rem; /* 12px cards */
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
+.dark {
+  --background: #0b0e14; /* true near-black navy */
+  --foreground: #edeef2;
+  --card: #12161f;
+  --card-foreground: #edeef2;
+  --popover: #12161f;
+  --popover-foreground: #edeef2;
+  --primary: #5c78ff;
+  --primary-foreground: #0b0e14;
+  --secondary: #1a2030;
+  --secondary-foreground: #edeef2;
+  --muted: #171c26;
+  --muted-foreground: #9aa1b0;
+  --accent: #1c2a5e;
+  --accent-foreground: #b9c6ff;
+  --border: #232a38;
+  --input: #262e3e;
+  --ring: #5c78ff;
+
+  --success: #3bc98a;
+  --success-foreground: #0b1a12;
+  --success-muted: #12301f;
+  --warning: #f0b94a;
+  --warning-foreground: #1d1503;
+  --warning-muted: #33270f;
+  --danger: #f16a6a;
+  --danger-foreground: #1d0707;
+  --danger-muted: #3a1414;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-muted: var(--danger-muted);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-card);
+  --radius-xl: calc(var(--radius-card) + 4px);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  /* Visible keyboard focus everywhere — WCAG 2.2 */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 22%, transparent);
+  }
+}
+
+@layer utilities {
+  .mono-data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .display-tight {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Motion — respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Signature hero grid — used ONCE, on the marketing homepage.
+   A faint mesh that settles from slight misalignment into true
+   alignment over ~800ms as hero content fades in.
+   ============================================================ */
+@keyframes grid-settle {
+  0% {
+    background-position: 0.6rem 0.6rem, -0.6rem -0.6rem;
+    opacity: 0.55;
+  }
+  100% {
+    background-position: 0 0, 0 0;
+    opacity: 1;
+  }
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--primary) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--primary) 10%, transparent) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  animation: grid-settle 800ms ease-out both;
+}
+
+.hero-fade-in {
+  animation: hero-fade-in 500ms ease-out 300ms both;
+}
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
